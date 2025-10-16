@@ -38,7 +38,9 @@ Desarrollado con un frontend moderno en **React + Vite** y un backend robusto en
 
 ### 1. Clona el repositorio
 
-git clone https://github.com/CamiloHI96/task-api  
+git clone https://github.com/CamiloHI96/task-api
+
+## Ejecutar Proyecto
 cd task-api
 
 ## Ejecutar Back-End
@@ -52,7 +54,7 @@ php artisan serve
 # Por defecto: http://127.0.0.1:8000
 
 ## Ejecutar Front-End
-cd ../front-end
+cd front-end
 
 # Instala dependencias de Node.js
 npm install
