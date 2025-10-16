@@ -6,7 +6,7 @@ Un gestor de tareas simple y funcional que permite crear, ver, actualizar y elim
 
 - **Título**
 - **Responsable**
-- **Fecha límite**
+- **Fecha**
 - **Estado** (Pendiente / Completado / Cancelado)
 
 Desarrollado con un frontend moderno en **React + Vite** y un backend robusto en **Laravel** expuesto como API RESTful.
@@ -23,7 +23,7 @@ Desarrollado con un frontend moderno en **React + Vite** y un backend robusto en
 - **Backend**:  
   - Laravel
   - API RESTful  
-  - MySQL / SQLite (configurable)  
+  - MySQL (configurable)  
 
 - **Herramientas**:  
   - Git  
@@ -38,13 +38,17 @@ Desarrollado con un frontend moderno en **React + Vite** y un backend robusto en
 
 ### 1. Clona el repositorio
 
-git clone https://github.com/CamiloHI96/task-api
+git clone https://github.com/CamiloHI96/task-api  
+
+### 2. Configura la base de datos
+
+Antes de ejecutar el backend, **lee el archivo `basedatos.txt`** ubicado en la carpeta `raiz del proyecto` para crear la base de datos y la tabla necesaria en tu gestor MySQL.
 
 ## Ejecutar Proyecto
 cd task-api
 
 ## Ejecutar Back-End
-cd back-end
+cd /back-end
 
 # Instala dependencias de PHP
 composer install
@@ -54,7 +58,7 @@ php artisan serve
 # Por defecto: http://127.0.0.1:8000
 
 ## Ejecutar Front-End
-cd front-end
+cd /front-end
 
 # Instala dependencias de Node.js
 npm install
