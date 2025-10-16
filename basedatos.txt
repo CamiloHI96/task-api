@@ -1,0 +1,26 @@
+-- Crear la base de datos
+CREATE DATABASE gestion_tareas;
+
+-- Usar la base de datos
+USE gestion_tareas;
+
+-- Crear tabla de estados
+CREATE TABLE estados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NombreEstado VARCHAR(50) NOT NULL
+);
+
+-- Crear tabla de tareas
+CREATE TABLE tareas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NombreTarea VARCHAR(150) NOT NULL,
+    Responsable VARCHAR(50),
+    estado INT NOT NULL,
+    FOREIGN KEY (estado) REFERENCES estados(id)
+);
+
+-- Insertar estados iniciales
+INSERT INTO estados (NombreEstado) VALUES 
+('Pendiente'),
+('En Progreso'),
+('Completada');
