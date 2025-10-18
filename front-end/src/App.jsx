@@ -11,7 +11,7 @@ function App() {
 
   {/* Cargar los datos de Laravel */}
   let cargarTareas = () => {
-    fetch("http://127.0.0.1:8000/api/tareas")
+    fetch(`${import.meta.env.VITE_API_URL}/api/tareas`)
       .then(res => res.json())
       .then(resultado => {
         setDatos(resultado);
@@ -24,7 +24,7 @@ function App() {
       return;
     }
 
-    const url = `http://127.0.0.1:8000/api/creart/${encodeURIComponent(responsable)}/${encodeURIComponent(tarea)}/${encodeURIComponent(fecha)}`;
+    const url = `${import.meta.env.VITE_API_URL}/api/creart/${encodeURIComponent(responsable)}/${encodeURIComponent(tarea)}/${encodeURIComponent(fecha)}`;
 
     fetch(url)
       .then(res => res.json())
@@ -48,7 +48,7 @@ function App() {
   };
 
   let borrarDato = (id) => {
-    fetch(`http://127.0.0.1:8000/api/borrarT/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/borrarT/${id}`)
       .then(res => res.json())
       .then(r => {
         if (r.estado === "ok") {
@@ -151,7 +151,8 @@ function App() {
                     <span className={`badge ${
                       v.estado === "Pendiente" ? "bg-warning text-dark" :
                       v.estado === "Realizado" ? "bg-success" :
-                      "bg-danger"
+                      v.estado === "Cancelado" ? "bg-danger" :
+                      "bg-info"
                     }`}>
                       {v.estado}
                     </span>
