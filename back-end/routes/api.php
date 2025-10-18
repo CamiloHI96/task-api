@@ -4,15 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-// Route::get('/prueba',function(){
-//     return 'Hola, esta es una ruta de prueba!';
-//     return response()->json(['message','Hola, esta es una ruta de prueba!']);
-// });
-
 //Mostrar todas las tareas
 Route::get('/tareas', function () {
     $tareas=DB::table('tareas')->get();
@@ -20,19 +11,31 @@ Route::get('/tareas', function () {
 });
 
 //Mostrar tarea por id
-Route::get("/tarea/{id}", function ($id) {
-    $tarea = DB::table("tareas")->where("id", $id)->get();
-    return $tarea;
-});
+// Route::get("/tarea/{id}", function ($id) {
+//     $tarea = DB::table("tareas")->where("id", $id)->get();
+//     return $tarea;
+// });
 
 //Crear tarea
-Route::get("/creart/{responsable}/{tarea}", function ($responsable,$tarea) {
-    $tarea = DB::table("tareas")->insert(
-        [
-            "NombreTarea"=>$tarea,
-            "Responsable"=>$responsable,
-            "estado"=>1
-        ]);
+Route::get("/creart/{responsable}/{tarea}/{fecha}", function ($responsable, $tarea, $fecha) {
+    $insertado = DB::table("tareas")->insert([
+        "NombreTarea" => $tarea,
+        "Responsable" => $responsable,
+        "Fecha" => $fecha,
+        "estado" => 1
+    ]);
+
+    if ($insertado) {
+        return [
+            "estado" => "ok",
+            "resp" => "Tarea creada con éxito"
+        ];
+    } else {
+        return [
+            "estado" => "no",
+            "resp" => "Error: no se pudo crear la tarea"
+        ];
+    }
 });
 
 //Eliminar tarea por id
