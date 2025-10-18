@@ -71,11 +71,21 @@ function App() {
     setIndiceEditando(i);
   };
 
+  {/* Cambiar estado de una tarea por id */}
   let cambiarEstado = (id, nuevoEstado) => {
-    const nuevosDatos = datos.map(tarea =>
-      tarea.id === id ? { ...tarea, estado: nuevoEstado } : tarea
-    );
-    setDatos(nuevosDatos);
+    fetch(`${import.meta.env.VITE_API_URL}/api/estado/${id}/${nuevoEstado}`)
+      .then(res => res.json())
+      .then(r => {
+        if (r.estado === "ok") {
+          cargarTareas();
+        } else {
+          alert(r.resp);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Error al cambiar el estado");
+      });
   };
 
   {/* useEffect para mostrar los datos cargados de Laravel */}
@@ -149,12 +159,13 @@ function App() {
                   <td>{v.Fecha}</td>
                   <td>
                     <span className={`badge ${
-                      v.estado === "Pendiente" ? "bg-warning text-dark" :
-                      v.estado === "Realizado" ? "bg-success" :
-                      v.estado === "Cancelado" ? "bg-danger" :
-                      "bg-info"
+                      v.estado === 1 ? "bg-warning text-dark" :
+                      v.estado === 2 ? "bg-success" :
+                      v.estado === 3 ? "bg-danger" : "bg-info"
                     }`}>
-                      {v.estado}
+                      {v.estado === 1 ? "Pendiente" :
+                      v.estado === 2 ? "Realizado" :
+                      v.estado === 3 ? "Cancelado" : "Desconocido"}
                     </span>
                   </td>
                   <td>
@@ -163,22 +174,22 @@ function App() {
                       <div className="d-flex gap-1">
                         <button
                           className="btn btn-warning btn-sm flex-fill"
-                          onClick={() => cambiarEstado(v.id, "Pendiente")}
-                          disabled={v.estado === "Pendiente"}
+                          onClick={() => cambiarEstado(v.id, 1)}
+                          disabled={v.estado === 1}
                         >
                           Pendiente
                         </button>
                         <button
                           className="btn btn-success btn-sm flex-fill"
-                          onClick={() => cambiarEstado(v.id, "Realizado")}
-                          disabled={v.estado === "Realizado"}
+                          onClick={() => cambiarEstado(v.id, 2)}
+                          disabled={v.estado === 2}
                         >
                           Realizado
                         </button>
                         <button
                           className="btn btn-danger btn-sm flex-fill"
-                          onClick={() => cambiarEstado(v.id, "Cancelado")}
-                          disabled={v.estado === "Cancelado"}
+                          onClick={() => cambiarEstado(v.id, 3)}
+                          disabled={v.estado === 3}
                         >
                           Cancelado
                         </button>

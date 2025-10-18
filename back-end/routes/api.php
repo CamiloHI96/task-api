@@ -54,3 +54,22 @@ Route::get("/borrarT/{id}", function ($id) {
     }
     return $res;
 });
+
+// Cambiar estado de una tarea por id
+Route::get("/estado/{id}/{nuevoEstado}", function ($id, $nuevoEstado) {
+    $actualizar = DB::table("tareas")
+        ->where("id", $id)
+        ->update(["estado" => $nuevoEstado]);
+
+    if ($actualizar) {
+        return [
+            "estado" => "ok",
+            "resp" => "Estado actualizado correctamente"
+        ];
+    } else {
+        return [
+            "estado" => "no",
+            "resp" => "Error al actualizar el estado"
+        ];
+    }
+});
