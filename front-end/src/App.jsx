@@ -18,6 +18,7 @@ function App() {
       });
   };
 
+  {/* Agregar una nueva tarea*/}
   let agregarDatos = () => {
     if (!tarea || !responsable || !fecha) {
       alert("Llena todos los campos");
@@ -47,6 +48,7 @@ function App() {
       });
   };
 
+  {/* Eliminar una tarea por id */}
   let borrarDato = (id) => {
     fetch(`${import.meta.env.VITE_API_URL}/api/borrarT/${id}`)
       .then(res => res.json())
@@ -63,13 +65,44 @@ function App() {
       });
   };
 
-  let modificarDato = (i) => {
-    const tareaSeleccionada = datos[i];
+  {/* Colocar los datos en los campos correspondientes */}
+  let modificarDato = (id) => {
+    const tareaSeleccionada = datos.find(t => t.id === id);
+    if (!tareaSeleccionada) return;
+
     setTarea(tareaSeleccionada.NombreTarea);
     setResponsable(tareaSeleccionada.Responsable);
     setFecha(tareaSeleccionada.Fecha);
-    setIndiceEditando(i);
+    setIndiceEditando(id);
   };
+
+  {/* Modificar los datos */}
+  const guardarCambios = () => {
+  if (!tarea || !responsable || !fecha) {
+    alert("Llena todos los campos");
+    return;
+  }
+
+  const url = `${import.meta.env.VITE_API_URL}/api/modificar/${indiceEditando}/${encodeURIComponent(tarea)}/${encodeURIComponent(responsable)}/${encodeURIComponent(fecha)}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(r => {
+      if (r.estado === "ok") {
+        cargarTareas();
+        setTarea("");
+        setResponsable("");
+        setFecha("");
+        setIndiceEditando(null);
+      } else {
+        alert(r.resp);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error al modificar la tarea");
+    });
+};
 
   {/* Cambiar estado de una tarea por id */}
   let cambiarEstado = (id, nuevoEstado) => {
@@ -126,12 +159,13 @@ function App() {
               onChange={(e) => setFecha(e.target.value)}
             />
           </div>
+          {/* Boton para agregar o guardar los nuevos cambios */}
           <div className="col-12 col-md-3 d-grid">
             <button
-              onClick={agregarDatos}
-              className="btn btn-success"
+              onClick={indiceEditando === null ? agregarDatos : guardarCambios}
+              className={`btn ${indiceEditando === null ? "btn-success" : "btn-warning"}`}
             >
-              Agregar
+              {indiceEditando === null ? "Agregar" : "Guardar Cambios"}
             </button>
           </div>
         </div>
@@ -198,7 +232,7 @@ function App() {
                       <div className="d-flex gap-1">
                         <button
                           className="btn btn-warning btn-sm flex-fill"
-                          onClick={() => modificarDato(i)}
+                          onClick={() => modificarDato(v.id)}
                         >
                           Modificar
                         </button>

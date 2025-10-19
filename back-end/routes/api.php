@@ -73,3 +73,26 @@ Route::get("/estado/{id}/{nuevoEstado}", function ($id, $nuevoEstado) {
         ];
     }
 });
+
+// Modificar datos de una tarea por id
+Route::get("/modificar/{id}/{tarea}/{responsable}/{fecha}", function ($id, $tarea, $responsable, $fecha) {
+    $modificarDatos = DB::table("tareas")
+        ->where("id", $id)
+        ->update([
+            "NombreTarea" => $tarea,
+            "Responsable" => $responsable,
+            "Fecha" => $fecha
+        ]);
+
+    if ($modificarDatos) {
+        return [
+            "estado" => "ok",
+            "resp" => "Datos modificados correctamente"
+        ];
+    } else {
+        return [
+            "estado" => "no",
+            "resp" => "Error al modificar los datos"
+        ];
+    }
+});
