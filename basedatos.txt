@@ -1,31 +1,30 @@
 -- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS gestion_tareas
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS tareas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 
 -- Usar la base de datos
-USE gestion_tareas;
+USE tareas;
 
 -- Crear tabla de estados
-CREATE TABLE IF NOT EXISTS estados (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    NombreEstado VARCHAR(50) NOT NULL
-);
-
--- Crear tabla de tareas
-CREATE TABLE IF NOT EXISTS tareas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    NombreTarea VARCHAR(150) NOT NULL,
-    Responsable VARCHAR(50) NOT NULL,
-    Fecha DATE NOT NULL,
-    estado INT NOT NULL,
-    FOREIGN KEY (estado) REFERENCES estados(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+CREATE TABLE estados (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  NombreEstado VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
 
 -- Insertar estados iniciales
 INSERT INTO estados (NombreEstado) VALUES
 ('Pendiente'),
 ('En Progreso'),
 ('Completada');
+
+-- Crear tabla de tareas
+CREATE TABLE tareas (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  NombreTarea VARCHAR(150) NOT NULL,
+  Responsable VARCHAR(50) NOT NULL,
+  Fecha DATE NOT NULL DEFAULT (CURRENT_DATE),
+  id_estado INT UNSIGNED NOT NULL,
+  FOREIGN KEY (id_estado) REFERENCES estados(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB;
