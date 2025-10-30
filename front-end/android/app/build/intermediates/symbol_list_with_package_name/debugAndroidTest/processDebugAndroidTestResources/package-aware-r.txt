@@ -1,0 +1,3 @@
+com.tuempresa.taskapp.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
